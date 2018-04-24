@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using KURSA_DARBS_PROGII.Scripts;
 using Newtonsoft.Json;
@@ -26,8 +19,6 @@ namespace KURSA_DARBS_PROGII
 
         }
 
-
-        //glabājas json string vērtības, kuras tiek padotas uz DoubleClick eventu
         public static NewsModel DataCategory;
         public static NewsModel DataCountry;
         public static NewsModel DataSource;
@@ -68,8 +59,22 @@ namespace KURSA_DARBS_PROGII
             {
                 var url = "https://newsapi.org/v2/top-headlines?sources="
                           + source.Text + "&apiKey=6b1ad7c441364a58b95573ee86ed9991";
-                var json = new WebClient() { Encoding = Encoding.UTF8 }.DownloadString(url);
-                DataCountry = JsonConvert.DeserializeObject<NewsModel>(json);
+
+                string json;
+
+                try
+                {
+                    json = new WebClient() { Encoding = Encoding.UTF8 }.DownloadString(url);
+                }
+                catch (Exception exception)
+                {
+                    Console.WriteLine(exception);
+                    MessageBox.Show("Enter valid values!");
+                    return;
+                }
+
+                
+                DataSource = JsonConvert.DeserializeObject<NewsModel>(json);
 
 
                 Functions.LoadNews(newsList, url);
@@ -99,7 +104,7 @@ namespace KURSA_DARBS_PROGII
             newsAdapter?.DrawDesign(e.Graphics, e.Bounds, Font, false);
         }
 
-        private void newsList_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void NewsList_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             var index = newsList.IndexFromPoint(e.Location);
             if (index == ListBox.NoMatches) return;
@@ -114,11 +119,16 @@ namespace KURSA_DARBS_PROGII
                 Process.Start(DataCategory.Articles[index].Url);
             }
 
-                
-            
+            if (!string.IsNullOrWhiteSpace(source.Text))
+            {
+                Process.Start(DataSource.Articles[index].Url);
+            }
+
+
+
         }
 
-        private void countryCode_TextChanged(object sender, EventArgs e)
+        private void CountryCode_TextChanged(object sender, EventArgs e)
         {
             //parbauda vai textBox ir empty (nepieciešams lai nepieļautu kļūmes)
             category.Enabled = !string.IsNullOrWhiteSpace(countryCode.Text);
@@ -142,6 +152,12 @@ namespace KURSA_DARBS_PROGII
             category.Enabled = false;
             searchButton.Enabled = false;
             newsList.Enabled = false;
+
+            if (Functions.optionCheck)
+            {
+                info.Hide();
+            }
+
         }
 
         private enum SourceList
@@ -174,9 +190,21 @@ namespace KURSA_DARBS_PROGII
             technology = 5
         }
 
-        private void source_TextChanged(object sender, EventArgs e)
+        private void Source_TextChanged(object sender, EventArgs e)
         {
             searchButton.Enabled = !string.IsNullOrWhiteSpace(source.Text) || !string.IsNullOrWhiteSpace(countryCode.Text);
+        }
+
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var logout = new Login();
+            logout.Show();
+            Hide();
         }
     }
 }

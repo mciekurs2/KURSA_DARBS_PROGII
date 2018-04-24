@@ -11,6 +11,8 @@ namespace KURSA_DARBS_PROGII.Scripts
 {
     internal class Functions
     {
+        public static bool optionCheck = true;
+
         public static void GetNewsData(string cityCode, DataGridView  gridView)
         {
             //noradaa url , city code un apiKey
@@ -64,9 +66,9 @@ namespace KURSA_DARBS_PROGII.Scripts
 
             for (var i = 0; i < 19; i++)
             {
-                byte[] getImage = new byte[] { };
+                byte[] getImage;
                 string author;
-                DateTime dTime = new DateTime();
+                DateTime dTime;
 
                 //nav pats pareizākā error ķeršana, bet dara savu dabu..
                 try
@@ -75,7 +77,7 @@ namespace KURSA_DARBS_PROGII.Scripts
                 }
                 catch (ArgumentOutOfRangeException)
                 {
-                    MessageBox.Show("Please eneter valid value ");
+                    //MessageBox.Show("Please eneter valid value ");
                     break;
                 }
 
