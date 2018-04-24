@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Net;
 using System.Text;
 using System.Windows.Forms;
@@ -19,7 +20,7 @@ namespace KURSA_DARBS_PROGII.Scripts
             var data = JsonConvert.DeserializeObject<NewsModel>(json);
 
             //nodrifee izmeeru prieksh header
-            gridView.RowHeadersWidth = 80;
+            gridView.RowHeadersWidth = 100;
 
             //iet cauri katram mainīgajam cauri json, tāpēc i < 19
             for (var i = 0; i < 19; i++)
@@ -31,7 +32,7 @@ namespace KURSA_DARBS_PROGII.Scripts
                 var linkCol = new DataGridViewLinkColumn();
 
                 //konvertē uz stundām un minūtēm
-                row.HeaderCell.Value = dTime.ToString("HH:mm");
+                row.HeaderCell.Value = dTime.ToString(dTime.Month + "." + dTime.Day + " HH:mm");
 
                 row.Cells[0].Value = data.Articles[i].Source.Name;
 
@@ -47,5 +48,19 @@ namespace KURSA_DARBS_PROGII.Scripts
             }
          
         }
+
+        private static ArrayList NewsList()
+        {
+            var newsList = new ArrayList();
+
+
+
+
+            return newsList;
+        }
+
+
+
     }
+
 }
