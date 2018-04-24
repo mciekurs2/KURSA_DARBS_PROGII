@@ -206,5 +206,10 @@ namespace KURSA_DARBS_PROGII
             logout.Show();
             Hide();
         }
+
+        private void MainWindow_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

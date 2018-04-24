@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Data.OleDb;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using KURSA_DARBS_PROGII.Scripts;
 
@@ -22,12 +15,7 @@ namespace KURSA_DARBS_PROGII
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Close();
-        }
-
-        private void Login_Load(object sender, EventArgs e)
-        {
-
+            Application.Exit();
         }
 
         private void CheckBox1_CheckedChanged(object sender, EventArgs e)
@@ -68,14 +56,15 @@ namespace KURSA_DARBS_PROGII
 
             conn.Close();
 
+        }
 
-
-
-
+        private void Login_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
         }
     }
 
-    class StaticValues
+    internal class StaticValues
     {
         public const string query = "SELECT [username] ,[password] FROM [User]";
         public const string error = "Invalid password or username";
