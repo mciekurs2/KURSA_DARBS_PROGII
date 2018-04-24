@@ -5,10 +5,12 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using KURSA_DARBS_PROGII.Scripts;
+using Newtonsoft.Json;
 
 namespace KURSA_DARBS_PROGII
 {
@@ -44,6 +46,23 @@ namespace KURSA_DARBS_PROGII
 
             e.DrawBackground();
             newsAdapter?.DrawDesign(e.Graphics, e.Bounds, Font, false);
+        }
+
+        private void newsList_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            var index = newsList.IndexFromPoint(e.Location);
+            if (index == ListBox.NoMatches) return;
+
+            //noradaa url , city code un apiKey
+            var url = "https://newsapi.org/v2/top-headlines?country="
+                      + countryCode.Text + "&apiKey=6b1ad7c441364a58b95573ee86ed9991";
+
+            //izmanto `encoding` savadak simboli nevus pareizi, iznēmot `us` (`ascii` laikam default)
+            var json = new WebClient() { Encoding = Encoding.UTF8 }.DownloadString(url);
+            var data = JsonConvert.DeserializeObject<NewsModel>(json);
+
+            //atvar rakstu ar attiecīgo indexu
+            Process.Start(data.Articles[index].Url);
         }
     }
 }
