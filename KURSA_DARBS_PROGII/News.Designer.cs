@@ -32,7 +32,7 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.countryCode = new System.Windows.Forms.TextBox();
             this.searchButton = new System.Windows.Forms.Button();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.newsList = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -55,9 +55,9 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.listBox1);
-            this.splitContainer1.Size = new System.Drawing.Size(1114, 450);
-            this.splitContainer1.SplitterDistance = 215;
+            this.splitContainer1.Panel2.Controls.Add(this.newsList);
+            this.splitContainer1.Size = new System.Drawing.Size(743, 450);
+            this.splitContainer1.SplitterDistance = 221;
             this.splitContainer1.TabIndex = 0;
             // 
             // splitContainer2
@@ -72,7 +72,7 @@
             // 
             this.splitContainer2.Panel2.Controls.Add(this.countryCode);
             this.splitContainer2.Panel2.Controls.Add(this.searchButton);
-            this.splitContainer2.Size = new System.Drawing.Size(215, 450);
+            this.splitContainer2.Size = new System.Drawing.Size(221, 450);
             this.splitContainer2.SplitterDistance = 395;
             this.splitContainer2.TabIndex = 0;
             // 
@@ -93,19 +93,22 @@
             this.searchButton.UseVisualStyleBackColor = true;
             this.searchButton.Click += new System.EventHandler(this.SearchButton_Click);
             // 
-            // listBox1
+            // newsList
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(2, 3);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(893, 446);
-            this.listBox1.TabIndex = 0;
+            this.newsList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.newsList.FormattingEnabled = true;
+            this.newsList.Location = new System.Drawing.Point(3, 3);
+            this.newsList.Name = "newsList";
+            this.newsList.Size = new System.Drawing.Size(512, 445);
+            this.newsList.TabIndex = 0;
+            this.newsList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.NewsList_DrawItem);
+            this.newsList.MeasureItem += new System.Windows.Forms.MeasureItemEventHandler(this.NewsList_MeasureItem);
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1114, 450);
+            this.ClientSize = new System.Drawing.Size(743, 450);
             this.Controls.Add(this.splitContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -129,7 +132,7 @@
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.Button searchButton;
         private System.Windows.Forms.TextBox countryCode;
-        private System.Windows.Forms.ListBox listBox1;
+        public System.Windows.Forms.ListBox newsList;
     }
 }
 
