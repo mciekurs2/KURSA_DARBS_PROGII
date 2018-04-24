@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace KURSA_DARBS_PROGII.Scripts
 {
-    internal class NewsModel
+    public class NewsModel
     {
         public string Status { get; set; }
         public long TotalResults { get; set; }

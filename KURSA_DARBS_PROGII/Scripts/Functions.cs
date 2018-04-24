@@ -31,7 +31,7 @@ namespace KURSA_DARBS_PROGII.Scripts
                 
                 //konvrtē laika formātu
                 var dTime = Convert.ToDateTime(data.Articles[i].PublishedAt.DateTime);
-                var linkCol = new DataGridViewLinkColumn();
+                //var linkCol = new DataGridViewLinkColumn();
 
                 //konvertē uz stundām un minūtēm
                 row.HeaderCell.Value = dTime.ToString(dTime.Month + "." + dTime.Day + " HH:mm");
@@ -51,13 +51,9 @@ namespace KURSA_DARBS_PROGII.Scripts
          
         }
 
-        private static ArrayList NewsList(string cityCode)
+        private static ArrayList NewsList(string url)
         {
             var newsList = new ArrayList();
-
-            //noradaa url , city code un apiKey
-            var url = "https://newsapi.org/v2/top-headlines?country="
-                      + cityCode + "&apiKey=6b1ad7c441364a58b95573ee86ed9991";
 
             //izmanto `encoding` savadak simboli nevus pareizi, iznēmot `us` (`ascii` laikam default)
             var json = new WebClient() { Encoding = Encoding.UTF8 }.DownloadString(url);
@@ -68,10 +64,20 @@ namespace KURSA_DARBS_PROGII.Scripts
 
             for (var i = 0; i < 19; i++)
             {
-                var getImage = new byte[0];
-                var author = "";
+                byte[] getImage = new byte[] { };
+                string author;
+                DateTime dTime = new DateTime();
 
-                var dTime = Convert.ToDateTime(data.Articles[i].PublishedAt.DateTime);
+                //nav pats pareizākā error ķeršana, bet dara savu dabu..
+                try
+                {
+                    dTime = Convert.ToDateTime(data.Articles[i].PublishedAt.DateTime);
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    MessageBox.Show("Please eneter valid value ");
+                    break;
+                }
 
                 var imageUrl = data.Articles[i]?.UrlToImage;
                 var title = data.Articles[i]?.Title;
@@ -84,9 +90,20 @@ namespace KURSA_DARBS_PROGII.Scripts
                 var addedTime = dTime.ToString(dTime.Month + "." + dTime.Day + " HH:mm");
 
                 //nomaina uz default bildi, ja bidle nav pieejama
-                try { getImage = imageData?.DownloadData(imageUrl); }
-                catch (ArgumentNullException) { getImage = imageData?.DownloadData("https://vignette.wikia.nocookie.net/simpsons/images/6/60/No_Image_Available.png/revision/latest?cb=20170219125728"); }
-                
+                try
+                {
+                    getImage = imageData.DownloadData(imageUrl);
+                }
+                catch (ArgumentNullException)
+                {
+                    getImage = imageData.DownloadData(
+                        "https://vignette.wikia.nocookie.net/simpsons/images/6/60/No_Image_Available.png/revision/latest?cb=20170219125728");
+                }
+                catch (WebException)
+                {
+                    getImage = imageData.DownloadData(
+                        "https://vignette.wikia.nocookie.net/simpsons/images/6/60/No_Image_Available.png/revision/latest?cb=20170219125728");
+                }
 
                 var ms = new MemoryStream(getImage);
 
@@ -97,10 +114,10 @@ namespace KURSA_DARBS_PROGII.Scripts
             return newsList;
         }
 
-        public static void LoadNews(ListBox listBox, string countryCode)
+        public static void LoadNews(ListBox listBox, string url)
         {
             listBox.DataSource = null;
-            listBox.DataSource = NewsList(countryCode);
+            listBox.DataSource = NewsList(url);
         }
     }
 
