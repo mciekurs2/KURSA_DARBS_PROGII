@@ -27,8 +27,7 @@ namespace KURSA_DARBS_PROGII
         {
 
             OleDbConnection conn = new OleDbConnection();
-            conn.ConnectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + Path.GetFullPath(@"..\..\..\") +
-                                    "loginDB.mdb";
+            conn.ConnectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\Martin\Source\Repos\KURSA_DARBS_PROGII\KURSA_DARBS_PROGII\loginDB.mdb";
 
             conn.Open();
             OleDbCommand cmd = new OleDbCommand();
